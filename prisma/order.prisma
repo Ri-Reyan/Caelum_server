@@ -1,0 +1,30 @@
+model Order {
+  id         String      @id @default(uuid())
+  customerId String
+  customer   Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  
+  watchId String
+  watch Watch            @relation(fields: [watchId], references: [id], onDelete: Cascade)
+
+
+  quantity Int @default(1)
+  totalPrice Float
+  location   String
+  status     OrderStatus @default(PENDING)
+  delivery   String?
+
+  payment    Payment?
+
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  DELIVERED
+  CANCELED
+}

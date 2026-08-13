@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const verifyUser_1 = __importDefault(require("../middleware/verifyUser"));
+const admin_controller_1 = require("./admin.controller");
+const adminRouter = (0, express_1.Router)();
+adminRouter.post("/add", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.addWatch);
+adminRouter.put("/update-watch", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.updateWatch);
+adminRouter.get("/customer", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.getCustomer);
+adminRouter.delete("/delete-customer", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.deleteCustomer);
+adminRouter.get("/fetch-admin", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.getAllAdmin);
+adminRouter.delete("/delete-admin", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.deleteAdmin);
+adminRouter.get("/fetch-watch", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.getAllWatch);
+adminRouter.delete("/delete-watch", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.deleteWatch);
+adminRouter.get("/fetch-order", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.getAllOrders);
+adminRouter.put("/update-order", (0, verifyUser_1.default)("admin"), admin_controller_1.adminController.updateOrder);
+exports.default = adminRouter;

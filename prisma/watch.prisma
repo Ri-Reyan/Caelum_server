@@ -1,0 +1,20 @@
+model Watch {
+  id            String      @id @default(uuid())
+  name          String
+  description   String
+  price         Float
+  features      String[]
+  technicalData String[]
+  bracelet      String[]
+  pictures      String[]
+  
+  orders Order[]
+
+  categoriId String
+  category Category? @relation(fields: [categoriId], references: [id], onDelete: Cascade) 
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("watches")
+}

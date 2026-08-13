@@ -1,0 +1,9 @@
+model Category {
+    id String @id @default(uuid())
+    tags String @unique
+    watch Watch[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("categories")
+}
