@@ -6,13 +6,13 @@ const adminRouter = Router();
 
 adminRouter.post("/add", verifyUser("admin"), adminController.addWatch);
 adminRouter.put(
-  "/update-watch",
+  "/update-watch/:watchId",
   verifyUser("admin"),
   adminController.updateWatch,
 );
 adminRouter.get("/customer", verifyUser("admin"), adminController.getCustomer);
 adminRouter.delete(
-  "/delete-customer",
+  "/delete-customer/:customerId",
   verifyUser("admin"),
   adminController.deleteCustomer,
 );
@@ -22,7 +22,7 @@ adminRouter.get(
   adminController.getAllAdmin,
 );
 adminRouter.delete(
-  "/delete-admin",
+  "/delete-admin/:adminId",
   verifyUser("admin"),
   adminController.deleteAdmin,
 );
@@ -32,7 +32,7 @@ adminRouter.get(
   adminController.getAllWatch,
 );
 adminRouter.delete(
-  "/delete-watch",
+  "/delete-watch/:watchId",
   verifyUser("admin"),
   adminController.deleteWatch,
 );
@@ -42,7 +42,7 @@ adminRouter.get(
   adminController.getAllOrders,
 );
 adminRouter.put(
-  "/update-order",
+  "/update-order/:orderId",
   verifyUser("admin"),
   adminController.updateOrder,
 );

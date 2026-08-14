@@ -57,7 +57,7 @@ const updateWatch = catchAsync(async (req: Request, res: Response) => {
 const getAllWatch = catchAsync(async (req: Request, res: Response) => {
   const watches = await prisma.watch.findMany({
     include: {
-      category: true, // Includes category relation if needed
+      category: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -68,7 +68,7 @@ const getAllWatch = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: 200,
     message: "All watches retrieved successfully",
-    data: watches, // Returns [] if empty, clean for UI rendering
+    data: watches,
   });
 });
 
@@ -88,10 +88,6 @@ const deleteWatch = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// ----------------------------------------------------------------------
-// CUSTOMER CONTROLLERS
-// ----------------------------------------------------------------------
-
 const getCustomer = catchAsync(async (req: Request, res: Response) => {
   const customers = await prisma.customer.findMany({
     select: {
@@ -102,7 +98,6 @@ const getCustomer = catchAsync(async (req: Request, res: Response) => {
       profile: true,
       createdAt: true,
       updatedAt: true,
-      // EXCLUDED password for security
     },
     orderBy: {
       createdAt: "desc",
@@ -133,15 +128,11 @@ const deleteCustomer = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// ----------------------------------------------------------------------
-// ADMIN CONTROLLERS
-// ----------------------------------------------------------------------
-
 const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
   const admins = await prisma.admin.findMany({
     where: {
       id: {
-        not: req.user?.id, // Exclude the current logged-in admin
+        not: req.user?.id,
       },
     },
     select: {
@@ -151,7 +142,6 @@ const getAllAdmin = catchAsync(async (req: Request, res: Response) => {
       role: true,
       createdAt: true,
       updatedAt: true,
-      // EXCLUDED password for security
     },
     orderBy: {
       createdAt: "desc",
@@ -181,10 +171,6 @@ const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
     message: "Admin deleted successfully",
   });
 });
-
-// ----------------------------------------------------------------------
-// ORDER CONTROLLERS
-// ----------------------------------------------------------------------
 
 const getAllOrders = catchAsync(async (req: Request, res: Response) => {
   const orders = await prisma.order.findMany({

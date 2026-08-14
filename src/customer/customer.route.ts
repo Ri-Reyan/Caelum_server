@@ -5,7 +5,7 @@ import { customerController } from "./customer.controller";
 const customerRouter = Router();
 
 customerRouter.post(
-  "/place-order",
+  "/place-order/:watchId",
   verifyUser("customer"),
   customerController.placePreOrder,
 );

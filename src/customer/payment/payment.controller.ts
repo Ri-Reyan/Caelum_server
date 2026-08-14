@@ -5,7 +5,11 @@ import { AppError } from "../../global/AppError";
 import sendResponse from "../../global/sendResponse";
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
-  const { orderId } = req.body;
+  const { orderId } = req.params;
+
+  if (!orderId || typeof orderId !== "string") {
+    throw new AppError("OrderId must requird.", 400);
+  }
 
   if (!orderId.trim()) {
     throw new AppError("Order Id must required", 400);
@@ -26,7 +30,11 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
 });
 
 const confirmPayment = catchAsync(async (req: Request, res: Response) => {
-  const { transactionId } = req.body;
+  const { transactionId } = req.params;
+
+  if (!transactionId || typeof transactionId !== "string") {
+    throw new AppError("Transaction id  must required", 400);
+  }
 
   if (!transactionId.trim()) {
     throw new AppError("Transaction Id must required", 400);

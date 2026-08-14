@@ -5,12 +5,13 @@ import { paymentController } from "./payment.controller";
 const paymentRouter = Router();
 
 paymentRouter.post(
-  "/create",
+  "/create/:orderId",
   verifyUser("customer"),
   paymentController.createPayment,
 );
+
 paymentRouter.post(
-  "/confirm",
+  "/confirm/:transactionId",
   verifyUser("customer"),
   paymentController.confirmPayment,
 );
