@@ -17,11 +17,13 @@ export const verifyToken = (token: string, secret: string) => {
 };
 
 export const sendCookie = (res: Response, name: string, value: string) => {
+  const isProduction = process.env.NODE_ENV === "production";
+
   res.cookie(name, value, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
     maxAge:
-      name === "refreshToken" ? 1000 * 60 * 60 * 24 : 1000 * 60 * 60 * 24 * 7,
+      name === "refreshToken" ? 1000 * 60 * 60 * 24 * 7 : 1000 * 60 * 60 * 24,
   });
 };
