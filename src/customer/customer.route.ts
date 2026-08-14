@@ -15,4 +15,10 @@ customerRouter.get(
   customerController.getAllOrder,
 );
 
+customerRouter.get(
+  "/order/:orderId",
+  verifyUser("customer"),
+  customerController.getOrderById,
+);
+
 export default customerRouter;

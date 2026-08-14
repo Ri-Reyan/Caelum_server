@@ -113,7 +113,29 @@ const Login = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const Logout = async (req: Request, res: Response) => {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? ("none" as const) : ("lax" as const),
+    path: "/",
+  };
+
+  res.clearCookie("accessToken", cookieOptions);
+
+  res.clearCookie("refreshToken", cookieOptions);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Logged out successfully",
+  });
+};
+
 export const authControllers = {
   Login,
   Register,
+  Logout,
 };

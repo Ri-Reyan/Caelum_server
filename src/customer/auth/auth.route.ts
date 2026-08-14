@@ -5,5 +5,6 @@ const authRouter = Router();
 
 authRouter.post("/register", authControllers.Register);
 authRouter.post("/login", authControllers.Login);
+authRouter.post("/logout", authControllers.Logout);
 
 export default authRouter;

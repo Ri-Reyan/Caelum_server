@@ -29,41 +29,70 @@ const placePreOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllOrder = catchAsync(async (req, res) => {
-  const { status } = req.body;
+const getAllOrder = catchAsync(async (req: Request, res: Response) => {
+  const { status } = req.query;
 
-  if (status === OrderStatus.PENDING) {
-    const orders = await prisma.order.findMany({
-      where: {
-        status: OrderStatus.PENDING,
-      },
-    });
+  const whereConditions: any = {};
 
-    return orders;
-  } else if (status === OrderStatus.CONFIRMED) {
-    const orders = await prisma.order.findMany({
-      where: {
-        status: OrderStatus.CONFIRMED,
-      },
-    });
-
-    return orders;
-  } else if (status === OrderStatus.DELIVERED) {
-    const orders = await prisma.order.findMany({
-      where: {
-        status: OrderStatus.DELIVERED,
-      },
-    });
-
-    return orders;
-  } else {
-    const orders = await prisma.order.findMany();
-
-    return orders;
+  if (status && Object.values(OrderStatus).includes(status as OrderStatus)) {
+    whereConditions.status = status as OrderStatus;
   }
+
+  // Prisma query
+  const orders = await prisma.order.findMany({
+    where: whereConditions,
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      watch: true,
+    },
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Orders retrieved successfully",
+    data: orders,
+  });
+});
+
+const getOrderById = catchAsync(async (req: Request, res: Response) => {
+  const { orderId } = req.params;
+  const userId = (req as any).user?.id;
+
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId as string,
+    },
+    include: {
+      watch: true,
+    },
+  });
+
+  if (!order) {
+    return res.status(404).json({
+      success: false,
+      message: "Order not found",
+    });
+  }
+
+  // Security Check: ইউজার যেন অন্যের অর্ডার দেখতে না পারে
+  if (order.customerId !== userId) {
+    return res.status(403).json({
+      success: false,
+      message: "Unauthorized access to this order",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Order details fetched successfully",
+    data: order,
+  });
 });
 
 export const customerController = {
   placePreOrder,
   getAllOrder,
+  getOrderById,
 };
